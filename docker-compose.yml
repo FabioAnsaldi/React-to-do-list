@@ -2,13 +2,12 @@ version: '3.3'
 
 services:
   web:
-    container_name: spa-plugin
+    container_name: react-to-do-list
     build:
       context: .
       dockerfile: Dockerfile
     ports: ['3000:3000']
     volumes:
-      - ./public:/usr/src/app/public
       - ./src:/usr/src/app/src
       - ./node_modules:/usr/src/cache
     environment:

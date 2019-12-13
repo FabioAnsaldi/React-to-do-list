@@ -1,5 +1,5 @@
-# spa-plugin
-React application into docker environment
+# react-to-do-list
+React To-Do-List application into docker environment
 
 ## Table of Contents
 - [Local Setup](#local-setup)
@@ -7,7 +7,7 @@ React application into docker environment
 - [Environment](#environment)
   - [Development](#development)
   - [Ide](#ide)
-  - [AccessToken](#accesstoken)
+  - [Global Variables](#global-variables)
 - [Contributing](#contributing)
 
 ### Local Setup
@@ -18,10 +18,10 @@ To preview the website locally you have to install on your local machine the lis
 ***That's it! You do not need to install NodeJS interpreter and Yarn or NPM package manager***
 
 ### Get it
-First of all, clone the repository `spa-plugin` into your local machine:
+First of all, clone the repository `react-to-do-list` into your local machine:
 
 ```shell
-git clone https://github.com/FabioAnsaldi/spa-plugin.git
+git clone https://github.com/FabioAnsaldi/react-to-do-list.git
 ```
 ######
 
@@ -30,25 +30,25 @@ Now you can run development environment and see the final result or if you want 
 
 ######
 
-#### Development environment
+#### Development
 Go to the new folder directory and run the following commands:
 ```shell
-cd spa-plugin
+cd react-to-do-list
 docker-compose up --build
 ```
-> It runs developing environment. You can edit resources and watch result at specific local URL: http://localhost/
+> It runs developing environment. You can edit resources and watch result at specific local URL: http://localhost:3000/
 
-#### Idee
-If is useful for you to set an extra plugins for your Idee, you can find the 'node_modules' folder and all of modules inside.
+#### Ide
+If is useful for you to set an extra plugins for your Ide, you can find the `node_modules` folder and all of modules inside.
 For example I usually use ESlint, such as in this repository, so I have to set the module directory folder in my Idee settings.
 > Remember:
 > You will have to install also NodeJS locally to use those modules inside to the folder  
 
-#### AccessToken
-You have to add an extra file named .env where there will be the Client ID and the Client Secret keys.
-> CLIENT_ID=xxxx
-
-> CLIENT_SECRET=yyyy
+#### Global Variables
+You have to add an extra file named `.env` where there will be the `API_URL` and the `INITIAL_DATA` keys.
+> API_URL=https://www.mocky.io/v2/
+>
+> INITIAL_DATA=5185415ba171ea3a00704eed
 
 ### Contributing
 Feel free to make changes to the project files.
