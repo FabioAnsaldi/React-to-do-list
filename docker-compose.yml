@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  web:
+    container_name: spa-plugin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: ['3000:3000']
+    volumes:
+      - ./public:/usr/src/app/public
+      - ./src:/usr/src/app/src
+      - ./node_modules:/usr/src/cache
+    environment:
+      - NODE_ENV=development
+    command: bash -c "cp -ar /usr/src/app/node_modules/. /usr/src/cache && npm run dev"

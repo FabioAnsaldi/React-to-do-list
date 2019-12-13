@@ -1,0 +1,40 @@
+{
+  "name": "spa-plugin",
+  "version": "1.0.0",
+  "description": "React application into docker environment",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "lint": "./node_modules/.bin/eslint src/pages/**",
+    "fix": "./node_modules/.bin/eslint src/pages/** --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "React",
+    "Docker",
+    "Nginx"
+  ],
+  "author": "Fabio Ansaldi",
+  "license": "ISC",
+  "dependencies": {
+    "@mailupinc/bee-plugin": "^1.2.0",
+    "dotenv": "^8.2.0",
+    "next": "^9.1.4",
+    "node-fetch": "^2.6.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.5.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.15.0",
+    "eslint-plugin-standard": "^4.0.1"
+  }
+}
