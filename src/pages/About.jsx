@@ -15,6 +15,6 @@ const About = () => (
             <li>Responsively designed for Desktop, Ipad and Iphone</li>
         </ul>
     </Layout>
-);
+)
 
 export default About
