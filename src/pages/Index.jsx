@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import Layout from '../components/Layout'
 import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Layout from '../components/Layout'
+import List from '../components/List'
 
 const Index = () => {
     // fake data generator
@@ -49,13 +49,13 @@ const Index = () => {
         width: 250
     })
     const defaultState = {
-        items: getItems(10),
-        selected: getItems(5, 10)
+        list0: getItems(3),
+        list1: getItems(2, 3)
     }
     const [listsState, setListsState] = useState(defaultState)
     const id2List = {
-        droppable: 'items',
-        droppable2: 'selected'
+        droppable0: 'list0',
+        droppable1: 'list1'
     }
     const getList = id => listsState[id2List[id]]
     const onDragEnd = result => {
@@ -64,6 +64,7 @@ const Index = () => {
         if (!destination) {
             return
         }
+        let newState = {...listsState};
         if (source.droppableId === destination.droppableId) {
             const items = reorder(
                 getList(source.droppableId),
@@ -71,10 +72,11 @@ const Index = () => {
                 destination.index
             )
 
-            let newState = { items, selected: listsState.selected }
-            if (source.droppableId === 'droppable2') {
-                newState = { items: listsState.items, selected: items }
-            }
+            Object.keys(id2List).map((key, index) => {
+                if (source.droppableId === key) {
+                    newState[id2List[key]] = items;
+                }
+            })
             setListsState(newState)
         } else {
             const result = move(
@@ -84,10 +86,10 @@ const Index = () => {
                 destination
             )
 
-            setListsState({
-                items: result.droppable,
-                selected: result.droppable2
+            Object.keys(id2List).map((key, index) => {
+                newState[id2List[key]] = result[key];
             })
+            setListsState(newState);
         }
     }
 
@@ -95,66 +97,17 @@ const Index = () => {
         <Layout>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Grid container justify="center" spacing={2}>
-                    <Grid key="0" item>
-                        <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                            {listsState.items.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}>
-                                            {item.content}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-                    </Grid>
-                    <Grid key="1" item>
-                        <Droppable droppableId="droppable2">
-                    {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                            {listsState.selected.map((item, index) => (
-                                <Draggable
-                                    key={item.id}
-                                    draggableId={item.id}
-                                    index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}>
-                                            {item.content}
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-                    </Grid>
+                    {Object.keys(listsState).map((key, index) => (
+                        <Grid key={key} item>
+                            <List
+                                droppableId={`droppable${index}`}
+                                getListStyle={getListStyle}
+                                getItemStyle={getItemStyle}
+                                items={listsState[key]}
+                                listName={key}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
             </DragDropContext>
         </Layout>

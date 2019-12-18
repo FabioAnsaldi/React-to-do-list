@@ -9,12 +9,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
 
+const grid = 8;
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1
-    },
-    menuButton: {
-        marginRight: theme.spacing(2)
+        flexGrow: 1,
+        marginBottom: '20px'
     },
     title: {
         flexGrow: 1
