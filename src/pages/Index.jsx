@@ -1,16 +1,12 @@
 import React, { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { Grid } from '@material-ui/core';
+import fetch from 'node-fetch';
+import { Grid, Typography } from '@material-ui/core';
 import Layout from '../components/Layout'
 import List from '../components/List'
+import Form from '../components/Form'
 
-const Index = () => {
-    // fake data generator
-    const getItems = (count, offset = 0) =>
-        Array.from({ length: count }, (v, k) => k).map(k => ({
-            id: `item-${k + offset}`,
-            content: `item ${k + offset}`
-        }))
+const Index = props => {
     // a little function to help us with reordering the result
     const reorder = (list, startIndex, endIndex) => {
         const result = Array.from(list)
@@ -39,23 +35,21 @@ const Index = () => {
         padding: grid * 2,
         margin: `0 0 ${grid}px 0`,
         // change background colour if dragging
-        background: isDragging ? 'lightgreen' : 'grey',
+        backgroundColor: isDragging ? 'lightgreen' : '',
         // styles we need to apply on draggables
         ...draggableStyle
     })
     const getListStyle = isDraggingOver => ({
-        background: isDraggingOver ? 'lightblue' : 'lightgrey',
+        backgroundColor: isDraggingOver ? 'lightblue' : 'lightgrey',
         padding: grid,
         width: 250
     })
     const defaultState = {
-        list0: getItems(3),
-        list1: getItems(2, 3)
+        default: [props.data]
     }
     const [listsState, setListsState] = useState(defaultState)
     const id2List = {
-        droppable0: 'list0',
-        droppable1: 'list1'
+        droppable0: 'default'
     }
     const getList = id => listsState[id2List[id]]
     const onDragEnd = result => {
@@ -92,9 +86,17 @@ const Index = () => {
             setListsState(newState);
         }
     }
+    const handleOnSaveClick = data => {
+        debugger
+        return false;
+    }
 
     return (
         <Layout>
+            <Typography variant="h5" gutterBottom>Todo List Generator</Typography>
+            <Grid container justify="center" spacing={2}>
+                <Form lists={id2List} onSaveClick={handleOnSaveClick}/>
+            </Grid>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Grid container justify="center" spacing={2}>
                     {Object.keys(listsState).map((key, index) => (
@@ -113,5 +115,13 @@ const Index = () => {
         </Layout>
     )
 }
+
+Index.getInitialProps = async function() {
+    //const res = await fetch('process.env.API_URL' + process.env.INITIAL_DATA);
+    const res = await fetch('http://www.mocky.io/v2/' + '5e0209872f00003688dcd513');
+    const data = await res.json();
+
+    return { data };
+};
 
 export default Index

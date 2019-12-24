@@ -18,8 +18,8 @@ const List = props => {
                         style={getListStyle(snapshot.isDraggingOver)}>
                         {items.map((item, index) => (
                             <Draggable
-                                key={item.id}
-                                draggableId={item.id}
+                                key={item.content.split(' ').join('_')}
+                                draggableId={item.content.split(' ').join('_')}
                                 index={index}>
                                 {(provided, snapshot) => (
                                     <div
@@ -28,7 +28,7 @@ const List = props => {
                                         {...provided.dragHandleProps}
                                         style={getItemStyle(
                                             snapshot.isDragging,
-                                            provided.draggableProps.style
+                                            {backgroundColor: item.color, ...provided.draggableProps.style}
                                         )}>
                                         {item.content}
                                     </div>
