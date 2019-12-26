@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import fetch from 'node-fetch';
-import { Grid, Typography } from '@material-ui/core';
+import fetch from 'node-fetch'
+import nextCookie from 'next-cookies'
+import { Grid, Typography } from '@material-ui/core'
 import Layout from '../components/Layout'
 import List from '../components/List'
 import Form from '../components/Form'
+import Save from '../components/Save'
 
 const Index = props => {
     // a little function to help us with reordering the result
@@ -44,13 +46,13 @@ const Index = props => {
         padding: grid,
         width: 250
     })
-    const defaultState = {
-        default: [props.data]
-    }
-    const [listsState, setListsState] = useState(defaultState)
-    const id2List = {
-        droppable0: 'default'
-    }
+    const defaultItem = props.data;
+    const defaultList = Object.keys(defaultItem).reduce((acc, current) => {
+        acc['droppable' + Object.keys(acc).length] = current;
+        return acc;
+    }, {});
+    const [listsState, setListsState] = useState(defaultItem)
+    const [id2List, setId2List] = useState(defaultList)
     const getList = id => listsState[id2List[id]]
     const onDragEnd = result => {
         const { source, destination } = result
@@ -65,7 +67,6 @@ const Index = props => {
                 source.index,
                 destination.index
             )
-
             Object.keys(id2List).map((key, index) => {
                 if (source.droppableId === key) {
                     newState[id2List[key]] = items;
@@ -86,17 +87,28 @@ const Index = props => {
             setListsState(newState);
         }
     }
-    const handleOnSaveClick = data => {
-        debugger
-        return false;
+    const handleOnSubmitClick = data => {
+        let newState = {...listsState};
+        if (!newState.hasOwnProperty(data.list)) {
+            newState[data.list] = [];
+            let newId2List = {...id2List};
+            let last = Object.keys(newId2List)[Object.keys(newId2List).length - 1];
+            last = last.replace('droppable', '');
+            newId2List[`droppable${parseInt(last) + 1}`] = data.list;
+            setId2List(newId2List);
+        }
+        newState[data.list].push(data.item);
+        setListsState(newState);
     }
 
     return (
         <Layout>
             <Typography variant="h5" gutterBottom>Todo List Generator</Typography>
+            <br/>
             <Grid container justify="center" spacing={2}>
-                <Form lists={id2List} onSaveClick={handleOnSaveClick}/>
+                <Form lists={id2List} onSubmitClick={handleOnSubmitClick}/>
             </Grid>
+            <br />
             <DragDropContext onDragEnd={onDragEnd}>
                 <Grid container justify="center" spacing={2}>
                     {Object.keys(listsState).map((key, index) => (
@@ -112,16 +124,21 @@ const Index = props => {
                     ))}
                 </Grid>
             </DragDropContext>
+            <br/>
+            <Grid container justify="center" spacing={2}>
+                <Save listItems={listsState}/>
+            </Grid>
         </Layout>
     )
 }
 
-Index.getInitialProps = async function() {
-    //const res = await fetch('process.env.API_URL' + process.env.INITIAL_DATA);
-    const res = await fetch('http://www.mocky.io/v2/' + '5e0209872f00003688dcd513');
-    const data = await res.json();
+Index.getInitialProps = async ctx => {
+    const { data } = nextCookie(ctx);
+    const string = data || process.env.INITIAL_DATA;
+    const res = await fetch(process.env.API_URL + process.env.API_VERSION + string);
+    const json = await res.json();
 
-    return { data };
+    return { data: json };
 };
 
 export default Index

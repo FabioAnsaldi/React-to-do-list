@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { MenuItem, FormControl, Select, Input, Button } from '@material-ui/core';
+import { MenuItem, FormControl, Select, Input, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -22,13 +22,17 @@ const MenuProps = {
 
 const Form = props => {
     const classes = useStyles();
-    const { lists, onSaveClick } = props;
+    const { lists, onSubmitClick } = props;
     const [selectValue, setSelectValue] = useState('');
     const [inputListValue, setInputListValue] = useState('');
     const [inputToDoValue, setInputToDoValue] = useState('');
     const handleSelectChange = (event) => {
         setSelectValue(event.target.value);
-        if (event.target.value !== NEW_LIST) setInputListValue(event.target.value);
+        if (event.target.value !== NEW_LIST) {
+            setInputListValue(event.target.value);
+        } else {
+            setInputListValue('');
+        }
     };
     const handleInputListChange = (event) => {
         setInputListValue(event.target.value);
@@ -38,8 +42,8 @@ const Form = props => {
     };
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        if(inputListValue && inputToDoValue) {
-            onSaveClick({
+        if (inputListValue && inputToDoValue) {
+            onSubmitClick({
                 list: inputListValue,
                 item: {
                     content: inputToDoValue,
@@ -103,7 +107,7 @@ const Form = props => {
                 />
             </FormControl>
             <FormControl>
-                <Button type="submit" variant="contained">Save</Button>
+                <Button type="submit" variant="contained">Add</Button>
             </FormControl>
         </form>
     )
@@ -111,7 +115,7 @@ const Form = props => {
 
 Form.propTypes = {
     lists: PropTypes.object,
-    onSaveClick: PropTypes.func
+    onSubmitClick: PropTypes.func
 };
 
 export default Form

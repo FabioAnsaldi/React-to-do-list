@@ -6,11 +6,9 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 export default class BlogApp extends App {
     static async getInitialProps ({ Component, ctx }) {
         let pageProps = {}
-
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx)
         }
-
         return { pageProps }
     }
 
