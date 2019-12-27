@@ -27,11 +27,11 @@ export default class BlogApp extends App {
     render () {
         const { Component, pageProps } = this.props
         return (
-            <>
+            <Fragment>
                 {this.renderHead()}
                 <CssBaseline />
                 <Component {...pageProps} />
-            </>
+            </Fragment>
         )
     }
 }
