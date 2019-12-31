@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { DragDropContext } from 'react-beautiful-dnd'
 import fetch from 'node-fetch'
 import nextCookie from 'next-cookies'
-import { Grid, Typography } from '@material-ui/core'
+import { Grid, makeStyles, Typography } from '@material-ui/core'
 import Layout from '../components/Layout'
 import List from '../components/List'
 import Form from '../components/Form'
 import Save from '../components/Save'
 
+const useStyles = makeStyles(theme => ({
+    container: {
+        zIndex: 99
+    }
+}))
+
 const Index = props => {
     const { defaultData } = props
+    const classes = useStyles()
     // a little function to help us with reordering the result
     const reorder = (list, startIndex, endIndex) => {
         const result = Array.from(list)
@@ -78,7 +86,7 @@ const Index = props => {
             const newId2List = { ...id2List }
 
             newState[data.list] = []
-            let last = 0;
+            let last = 0
             if (newId2List.length > 0) {
                 last = Object.keys(newId2List)[Object.keys(newId2List).length - 1]
                 last = last.replace('droppable', '')
@@ -92,30 +100,35 @@ const Index = props => {
     const deleteByVal = (obj, val) => {
         for (var key in obj) {
             if (obj.hasOwnProperty(key) && obj[key] === val) {
-                delete obj[key];
+                delete obj[key]
             }
         }
-    };
+    }
     const handleOnRemove = (list, index) => {
         const newState = { ...listsState }
         const newId2List = { ...id2List }
 
-        newState[list].splice(index, 1);
-        setListsState(newState);
+        newState[list].splice(index, 1)
+        setListsState(newState)
         if (newState[list].length === 0) {
-            delete newState[list];
-            deleteByVal(newId2List, list);
-            setId2List(newId2List);
+            delete newState[list]
+            deleteByVal(newId2List, list)
+            setId2List(newId2List)
         }
     }
     const handleOnMarkDone = (list, index) => {
         const newState = { ...listsState }
 
-        let mark = newState[list][index];
-        newState[list].splice(index, 1);
-        mark.done = !mark.done;
-        newState[list].splice(index, 1, mark);
-        setListsState(newState);
+        const mark = newState[list][index]
+        mark.done = !mark.done
+        newState[list].splice(index, 1, mark)
+        setListsState(newState)
+    }
+    const handleOnItemChange = (list, index, item) => {
+        const newState = { ...listsState }
+
+        newState[list].splice(index, 1, item)
+        setListsState(newState)
     }
 
     return (
@@ -135,13 +148,14 @@ const Index = props => {
             <Grid container justify="center" spacing={2}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {Object.keys(listsState).map((key, index) => (
-                        <Grid key={key} item>
+                        <Grid key={key} item className={classes.container}>
                             <List
                                 droppableId={`droppable${index}`}
                                 items={listsState[key]}
                                 listName={key}
                                 onRemove={handleOnRemove}
                                 onMarkDone={handleOnMarkDone}
+                                onItemChange={handleOnItemChange}
                             />
                         </Grid>
                     ))}
@@ -164,6 +178,10 @@ Index.getInitialProps = async ctx => {
     const json = await res.json()
 
     return { defaultData: json }
+}
+
+Index.propTypes = {
+    defaultData: PropTypes.object
 }
 
 export default Index
