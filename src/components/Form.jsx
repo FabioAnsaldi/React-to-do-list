@@ -46,7 +46,8 @@ const Form = props => {
             onSubmitClick({
                 list: inputListValue,
                 item: {
-                    content: inputToDoValue,
+                    title: inputToDoValue,
+                    content: '',
                     color: '#009efb',
                     done: false
                 }

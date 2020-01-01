@@ -6,7 +6,8 @@ import { CompactPicker } from "react-color"
 
 const useStyles = makeStyles(theme => ({
     title: {
-      margin: 0
+        margin: 0,
+        cursor: 'pointer'
     },
     input: {
         display: 'block'
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Item = props => {
-    const { data, index, onItemSave } = props
+    const { data, index, onItemSave, onColorChange } = props
     const [item, setItem] = useState(data)
     const classes = useStyles();
     const handleOnItemClick = () => {
@@ -42,7 +43,7 @@ const Item = props => {
     const handleOnContentChange = event => {
         const newItem = { ...item }
 
-        newItem.content = event.currentTarget.value;
+        newItem.content = event.currentTarget.value
         setItem(newItem);
     }
     const handleChangeComplete = color => {
@@ -50,6 +51,7 @@ const Item = props => {
 
         newItem.color = color.hex;
         setItem(newItem);
+        onColorChange(index, color.hex)
     }
     const handleOnSubmit = event => {
         event.preventDefault();
@@ -61,9 +63,9 @@ const Item = props => {
     }
 
     return (
-        <form onSubmit={handleOnSubmit} className="item-component" noValidate autoComplete="off">
+        <div className="item-component">
             {item.editing &&
-            <Fragment>
+            <form onSubmit={handleOnSubmit} noValidate autoComplete="off">
                 <Input
                     className={classes.input}
                     autoFocus
@@ -76,8 +78,8 @@ const Item = props => {
                 <CompactPicker
                     color={item.color}
                     onChangeComplete={handleChangeComplete} />
-                <Button className={classes.button} type="submit" variant="contained" color="primary">Update</Button>
-            </Fragment> ||
+                <Button className={classes.button} type="submit" variant="contained" color="primary">Done</Button>
+            </form> ||
             <Fragment>
                 <Tooltip title="Click to Edit item" placement="top-start">
                     <h4
@@ -89,7 +91,7 @@ const Item = props => {
                 {item.content}
             </Fragment>
             }
-        </form>
+        </div>
     )
 };
 
@@ -97,6 +99,7 @@ Item.propTypes = {
     data: PropTypes.object,
     index: PropTypes.number,
     onItemSave: PropTypes.func,
+    onColorChange: PropTypes.func,
 };
 
 export default Item

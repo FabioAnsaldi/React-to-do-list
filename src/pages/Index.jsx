@@ -43,9 +43,10 @@ const Index = props => {
         acc['droppable' + Object.keys(acc).length] = current
         return acc
     }, {})
+    const defaultColor = '#d3d3d3';
     const [listsState, setListsState] = useState(defaultData)
     const [id2List, setId2List] = useState(defaultList)
-    const getList = id => listsState[id2List[id]]
+    const getList = id => listsState[id2List[id]].items
     const onDragEnd = result => {
         const { source, destination } = result
         // dropped outside the list
@@ -61,7 +62,7 @@ const Index = props => {
             )
             Object.keys(id2List).map((key, index) => {
                 if (source.droppableId === key) {
-                    newState[id2List[key]] = items
+                    newState[id2List[key]].items = items
                 }
             })
             setListsState(newState)
@@ -74,7 +75,7 @@ const Index = props => {
             )
 
             Object.keys(id2List).map((key, index) => {
-                newState[id2List[key]] = result[key]
+                newState[id2List[key]].items = result[key]
             })
             setListsState(newState)
         }
@@ -85,7 +86,10 @@ const Index = props => {
         if (!newState.hasOwnProperty(data.list)) {
             const newId2List = { ...id2List }
 
-            newState[data.list] = []
+            newState[data.list] = {
+                items: [],
+                color: defaultColor
+            }
             let last = 0
             if (newId2List.length > 0) {
                 last = Object.keys(newId2List)[Object.keys(newId2List).length - 1]
@@ -94,7 +98,7 @@ const Index = props => {
             newId2List[`droppable${parseInt(last) + 1}`] = data.list
             setId2List(newId2List)
         }
-        newState[data.list].push(data.item)
+        newState[data.list].items.push(data.item)
         setListsState(newState)
     }
     const deleteByVal = (obj, val) => {
@@ -104,13 +108,16 @@ const Index = props => {
             }
         }
     }
+    const getKeyByValue = (object, value) => {
+        return Object.keys(object).find(key => object[key] === value);
+    }
     const handleOnRemove = (list, index) => {
         const newState = { ...listsState }
         const newId2List = { ...id2List }
 
-        newState[list].splice(index, 1)
+        newState[list].items.splice(index, 1)
         setListsState(newState)
-        if (newState[list].length === 0) {
+        if (newState[list].items && newState[list].items.length === 0) {
             delete newState[list]
             deleteByVal(newId2List, list)
             setId2List(newId2List)
@@ -118,17 +125,40 @@ const Index = props => {
     }
     const handleOnMarkDone = (list, index) => {
         const newState = { ...listsState }
+        const mark = newState[list].items[index]
 
-        const mark = newState[list][index]
         mark.done = !mark.done
-        newState[list].splice(index, 1, mark)
+        newState[list].items.splice(index, 1, mark)
+        setListsState(newState)
+    }
+    const handleOnItemColorChange = (list, index, color) => {
+        const newState = { ...listsState }
+        const mark = newState[list].items[index]
+
+        mark.color = color
+        newState[list].items.splice(index, 1, mark)
         setListsState(newState)
     }
     const handleOnItemChange = (list, index, item) => {
         const newState = { ...listsState }
 
-        newState[list].splice(index, 1, item)
+        newState[list].items.splice(index, 1, item)
         setListsState(newState)
+    }
+    const handleOnListChange = (list, title, color) => {
+        const newState = { ...listsState }
+        const newId2List = { ...id2List }
+        const mark = {
+            items: newState[list].items,
+            color: color
+        }
+
+        delete newState[list]
+        let id = getKeyByValue(newId2List, list)
+        newState[title] = mark
+        newId2List[id] = title
+        setListsState(newState)
+        setId2List(newId2List)
     }
 
     return (
@@ -140,7 +170,7 @@ const Index = props => {
             </Grid>
             <br/>
             <Grid container justify="center" spacing={2}>
-                <Grid item xs={12} md={6} lg={5}>
+                <Grid item xs={12} md={5} lg={6}>
                     <Form lists={id2List} onSubmitClick={handleOnSubmitClick}/>
                 </Grid>
             </Grid>
@@ -151,11 +181,14 @@ const Index = props => {
                         <Grid key={key} item className={classes.container}>
                             <List
                                 droppableId={`droppable${index}`}
-                                items={listsState[key]}
+                                items={listsState[key].items}
+                                listColor={listsState[key].color}
                                 listName={key}
                                 onRemove={handleOnRemove}
                                 onMarkDone={handleOnMarkDone}
                                 onItemChange={handleOnItemChange}
+                                onListChange={handleOnListChange}
+                                onItemColorChange={handleOnItemColorChange}
                             />
                         </Grid>
                     ))}
