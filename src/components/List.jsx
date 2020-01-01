@@ -27,12 +27,12 @@ const useStyles = makeStyles(theme => ({
         display: 'block'
     },
     button: {
-        margin: '10px 0 0 0'
+        margin: '10px 0'
     },
 }));
 
 const List = props => {
-    const { droppableId, items, listColor, listName, onRemove, onMarkDone, onItemChange, onListChange, onItemColorChange } = props;
+    const { droppableId, items, listColor, listName, onListRemove, onListChange, onRemove, onMarkDone, onItemChange, onItemColorChange } = props;
     const classes = useStyles();
     const [edit, setEdit] = useState(false)
     const [title, setTitle] = useState(listName)
@@ -67,6 +67,9 @@ const List = props => {
         setEdit(false);
         onListChange(listName, title, color);
     }
+    const handleOnListRemoveClick = () => {
+        onListRemove(listName)
+    }
     const handleOnRemoveClick = event => {
         event.preventDefault();
         let index = event.currentTarget.dataset && event.currentTarget.dataset.index;
@@ -100,11 +103,18 @@ const List = props => {
                     <Button className={classes.button} type="submit" variant="contained" color="primary">Done</Button>
                 </div>
             </form> ||
-            <Tooltip title="Click to Edit item" placement="top-start">
-                <h3 onClick={handleOnTitleClick} className={classes.title}>
-                    {listName}
-                </h3>
-            </Tooltip>
+            <Grid container>
+                <Grid xs={11} item>
+                    <Tooltip title="Click to Edit item" placement="top-start">
+                        <h3 onClick={handleOnTitleClick} className={classes.title}>
+                            {listName}
+                        </h3>
+                    </Tooltip>
+                </Grid>
+                <Grid item xs={1} className={classes.icon} onClick={handleOnListRemoveClick}>
+                    <DeleteForeverOutlinedIcon />
+                </Grid>
+            </Grid>
             }
             <Droppable droppableId={droppableId}>
                 {(provided, snapshot) => (
@@ -169,6 +179,7 @@ List.propTypes = {
     onRemove: PropTypes.func,
     onMarkDone: PropTypes.func,
     onItemChange: PropTypes.func,
+    onListRemove: PropTypes.func,
     onListChange: PropTypes.func,
     onItemColorChange: PropTypes.func,
 };
