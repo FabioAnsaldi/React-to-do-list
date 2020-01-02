@@ -4,9 +4,9 @@ import { Typography, Grid, Input, Tooltip, Button } from '@material-ui/core';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { makeStyles } from '@material-ui/core/styles';
-import { CompactPicker } from "react-color";
+import { CompactPicker } from 'react-color';
 import Item from '../components/Item'
 
 const useStyles = makeStyles(theme => ({
@@ -16,9 +16,6 @@ const useStyles = makeStyles(theme => ({
     },
     icon: {
         cursor: 'pointer'
-    },
-    container: {
-        zIndex: 99
     },
     grid: {
         maxHeight: '30px'
@@ -72,12 +69,12 @@ const List = props => {
     }
     const handleOnRemoveClick = event => {
         event.preventDefault();
-        let index = event.currentTarget.dataset && event.currentTarget.dataset.index;
+        let index = event.currentTarget.dataset.index;
         onRemove(listName, index);
     }
     const handleOnMarkDoneClick = event => {
         event.preventDefault();
-        let index = event.currentTarget.dataset && event.currentTarget.dataset.index;
+        let index = event.currentTarget.dataset.index;
         onMarkDone(listName, index);
     }
     const handleOnItemSave = (index, item) => {
@@ -123,8 +120,8 @@ const List = props => {
                         style={getListStyle(snapshot.isDraggingOver)}>
                         {items.map((item, index) => (
                             <Draggable
-                                key={item.title.split(' ').join('_')}
-                                draggableId={item.title.split(' ').join('_')}
+                                key={`${item.title.split(' ').join('_')}-${listName}-${index}`}
+                                draggableId={`${item.title.split(' ').join('_')}-${listName}-${index}`}
                                 index={index}>
                                 {(provided, snapshot) => (
                                     <Grid

@@ -72,8 +72,7 @@ const Form = props => {
                                 if (selected.length === 0) return <em>Select a List</em>;
                                 return selected;
                             }}
-                            MenuProps={MenuProps}
-                        >
+                            MenuProps={MenuProps}>
                             <MenuItem value={NEW_LIST}>
                                 <em>{NEW_LIST}</em>
                             </MenuItem>
@@ -96,8 +95,7 @@ const Form = props => {
                                 aria-describedby="standard-weight-helper-text"
                                 inputProps={{
                                     'aria-label': 'weight',
-                                }}
-                            />
+                                }} />
                         </FormControl>
                     </Grid>
                 )}

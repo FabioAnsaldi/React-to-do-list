@@ -1,5 +1,4 @@
 import React from 'react'
-import {Grid, Typography} from "@material-ui/core";
 
 const preloader = {
     alignItems: 'center',
@@ -16,7 +15,6 @@ const preloader = {
 };
 
 const Preloader = props => {
-
     return (
         <div className="preloader-component" style={preloader}>
             <h2 style={{fontFamily: 'initial', fontSize: 'initial'}}>Loading ...</h2>

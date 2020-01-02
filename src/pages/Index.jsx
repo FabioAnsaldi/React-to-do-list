@@ -9,15 +9,8 @@ import List from '../components/List'
 import Form from '../components/Form'
 import Save from '../components/Save'
 
-const useStyles = makeStyles(theme => ({
-    container: {
-        zIndex: 99
-    }
-}))
-
 const Index = props => {
     const { defaultData } = props
-    const classes = useStyles()
     // a little function to help us with reordering the result
     const reorder = (list, startIndex, endIndex) => {
         const result = Array.from(list)
@@ -54,12 +47,14 @@ const Index = props => {
             return
         }
         const newState = { ...listsState }
+
         if (source.droppableId === destination.droppableId) {
             const items = reorder(
                 getList(source.droppableId),
                 source.index,
                 destination.index
             )
+
             Object.keys(id2List).map((key, index) => {
                 if (source.droppableId === key) {
                     newState[id2List[key]].items = items
@@ -87,12 +82,12 @@ const Index = props => {
 
         if (!newState.hasOwnProperty(data.list)) {
             const newId2List = { ...id2List }
+            const last = Object.keys(newId2List).length
 
             newState[data.list] = {
                 items: [],
                 color: defaultColor
             }
-            let last = Object.keys(newId2List).length
             newId2List[`droppable${last}`] = data.list
             setId2List(newId2List)
         }
@@ -111,7 +106,6 @@ const Index = props => {
     }
     const handleOnRemove = (list, index) => {
         const newState = { ...listsState }
-        const newId2List = { ...id2List }
 
         newState[list].items.splice(index, 1)
         setListsState(newState)
@@ -180,9 +174,9 @@ const Index = props => {
             <Grid container justify="center" spacing={2}>
                 <DragDropContext onDragEnd={onDragEnd}>
                     {Object.keys(listsState).map((key, index) => (
-                        <Grid key={key} item className={classes.container}>
+                        <Grid key={key} item>
                             <List
-                                droppableId={`droppable${index}`}
+                                droppableId={getKeyByValue(id2List, key)}
                                 items={listsState[key].items}
                                 listColor={listsState[key].color}
                                 listName={key}
