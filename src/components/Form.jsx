@@ -1,47 +1,47 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { MenuItem, FormControl, Select, Input, Button, Grid } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
     margin: {
         margin: theme.spacing(1)
     }
-}));
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const NEW_LIST = 'New list';
+}))
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const NEW_LIST = 'New list'
 const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 450,
-        },
-    },
-};
+            width: 450
+        }
+    }
+}
 
 const Form = props => {
-    const classes = useStyles();
-    const { lists, onSubmitClick } = props;
-    const [selectValue, setSelectValue] = useState('');
-    const [inputListValue, setInputListValue] = useState('');
-    const [inputToDoValue, setInputToDoValue] = useState('');
+    const classes = useStyles()
+    const { lists, onSubmitClick } = props
+    const [selectValue, setSelectValue] = useState('')
+    const [inputListValue, setInputListValue] = useState('')
+    const [inputToDoValue, setInputToDoValue] = useState('')
     const handleSelectChange = (event) => {
-        setSelectValue(event.target.value);
+        setSelectValue(event.target.value)
         if (event.target.value !== NEW_LIST) {
-            setInputListValue(event.target.value);
+            setInputListValue(event.target.value)
         } else {
-            setInputListValue('');
+            setInputListValue('')
         }
-    };
+    }
     const handleInputListChange = (event) => {
-        setInputListValue(event.target.value);
-    };
+        setInputListValue(event.target.value)
+    }
     const handleInputToDoChange = (event) => {
-        setInputToDoValue(event.target.value);
-    };
+        setInputToDoValue(event.target.value)
+    }
     const handleOnSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         if (inputListValue && inputToDoValue) {
             onSubmitClick({
                 list: inputListValue,
@@ -51,12 +51,12 @@ const Form = props => {
                     color: '#009efb',
                     done: false
                 }
-            });
-            setSelectValue('');
-            setInputListValue('');
-            setInputToDoValue('');
+            })
+            setSelectValue('')
+            setInputListValue('')
+            setInputToDoValue('')
         }
-    };
+    }
 
     return (
         <form onSubmit={handleOnSubmit} className="form-component">
@@ -69,8 +69,8 @@ const Form = props => {
                             onChange={handleSelectChange}
                             input={<Input />}
                             renderValue={selected => {
-                                if (selected.length === 0) return <em>Select a List</em>;
-                                return selected;
+                                if (selected.length === 0) return <em>Select a List</em>
+                                return selected
                             }}
                             MenuProps={MenuProps}>
                             <MenuItem value={NEW_LIST}>
@@ -94,7 +94,7 @@ const Form = props => {
                                 onChange={handleInputListChange}
                                 aria-describedby="standard-weight-helper-text"
                                 inputProps={{
-                                    'aria-label': 'weight',
+                                    'aria-label': 'weight'
                                 }} />
                         </FormControl>
                     </Grid>
@@ -108,7 +108,7 @@ const Form = props => {
                             onChange={handleInputToDoChange}
                             aria-describedby="standard-weight-helper-text"
                             inputProps={{
-                                'aria-label': 'weight',
+                                'aria-label': 'weight'
                             }}
                         />
                     </FormControl>
@@ -123,11 +123,11 @@ const Form = props => {
             </Grid>
         </form>
     )
-};
+}
 
 Form.propTypes = {
     lists: PropTypes.object,
     onSubmitClick: PropTypes.func
-};
+}
 
 export default Form

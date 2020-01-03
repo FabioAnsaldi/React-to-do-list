@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { DragDropContext } from 'react-beautiful-dnd'
 import fetch from 'node-fetch'
 import nextCookie from 'next-cookies'
-import { Grid, makeStyles, Typography } from '@material-ui/core'
+import { Grid, Typography } from '@material-ui/core'
 import Layout from '../components/Layout'
 import List from '../components/List'
 import Form from '../components/Form'
@@ -36,7 +36,7 @@ const Index = props => {
         acc['droppable' + Object.keys(acc).length] = current
         return acc
     }, {})
-    const defaultColor = '#d3d3d3';
+    const defaultColor = '#d3d3d3'
     const [listsState, setListsState] = useState(defaultData)
     const [id2List, setId2List] = useState(defaultList)
     const getList = id => listsState[id2List[id]].items
@@ -79,7 +79,7 @@ const Index = props => {
     }
     const handleOnSubmitClick = data => {
         const newState = { ...listsState }
-
+        // eslint-disable-next-line no-prototype-builtins
         if (!newState.hasOwnProperty(data.list)) {
             const newId2List = { ...id2List }
             const last = Object.keys(newId2List).length
@@ -96,13 +96,14 @@ const Index = props => {
     }
     const deleteByVal = (obj, val) => {
         for (var key in obj) {
+            // eslint-disable-next-line no-prototype-builtins
             if (obj.hasOwnProperty(key) && obj[key] === val) {
                 delete obj[key]
             }
         }
     }
     const getKeyByValue = (object, value) => {
-        return Object.keys(object).find(key => object[key] === value);
+        return Object.keys(object).find(key => object[key] === value)
     }
     const handleOnRemove = (list, index) => {
         const newState = { ...listsState }
@@ -150,7 +151,8 @@ const Index = props => {
         }
 
         delete newState[list]
-        let id = getKeyByValue(newId2List, list)
+        const id = getKeyByValue(newId2List, list)
+
         newState[title] = mark
         newId2List[id] = title
         setListsState(newState)

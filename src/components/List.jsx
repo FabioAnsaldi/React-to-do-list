@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Typography, Grid, Input, Tooltip, Button } from '@material-ui/core';
-import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { makeStyles } from '@material-ui/core/styles';
-import { CompactPicker } from 'react-color';
+import { Grid, Input, Tooltip, Button } from '@material-ui/core'
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined'
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { makeStyles } from '@material-ui/core/styles'
+import { CompactPicker } from 'react-color'
 import Item from '../components/Item'
 
 const useStyles = makeStyles(theme => ({
@@ -25,16 +25,16 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         margin: '10px 0'
-    },
-}));
+    }
+}))
 
 const List = props => {
-    const { droppableId, items, listColor, listName, onListRemove, onListChange, onRemove, onMarkDone, onItemChange, onItemColorChange } = props;
-    const classes = useStyles();
+    const { droppableId, items, listColor, listName, onListRemove, onListChange, onRemove, onMarkDone, onItemChange, onItemColorChange } = props
+    const classes = useStyles()
     const [edit, setEdit] = useState(false)
     const [title, setTitle] = useState(listName)
     const [color, setColor] = useState(listColor)
-    const grid = 8;
+    const grid = 8
     const getItemStyle = (isDragging, draggableStyle) => ({
         // some basic styles to make the items look a bit nicer
         userSelect: 'none',
@@ -51,31 +51,32 @@ const List = props => {
         width: 340
     })
     const handleOnTitleClick = () => {
-        setEdit(true);
+        setEdit(true)
     }
     const handleOnTitleChange = event => {
-        setTitle(event.currentTarget.value);
+        setTitle(event.currentTarget.value)
     }
     const handleChangeComplete = color => {
-        setColor(color.hex);
+        setColor(color.hex)
     }
     const handleOnSubmit = event => {
-        event.preventDefault();
-        setEdit(false);
-        onListChange(listName, title, color);
+        event.preventDefault()
+        setEdit(false)
+        onListChange(listName, title, color)
     }
     const handleOnListRemoveClick = () => {
         onListRemove(listName)
     }
     const handleOnRemoveClick = event => {
-        event.preventDefault();
-        let index = event.currentTarget.dataset.index;
-        onRemove(listName, index);
+        event.preventDefault()
+        const index = event.currentTarget.dataset.index
+
+        onRemove(listName, index)
     }
     const handleOnMarkDoneClick = event => {
-        event.preventDefault();
-        let index = event.currentTarget.dataset.index;
-        onMarkDone(listName, index);
+        event.preventDefault()
+        const index = event.currentTarget.dataset.index
+        onMarkDone(listName, index)
     }
     const handleOnItemSave = (index, item) => {
         onItemChange(listName, index, item)
@@ -86,7 +87,7 @@ const List = props => {
 
     return (
         <div className="list-component">
-            {edit &&
+            {(edit &&
             <form onSubmit={handleOnSubmit} noValidate autoComplete="off">
                 <Input
                     className={classes.input}
@@ -99,7 +100,7 @@ const List = props => {
                 <div>
                     <Button className={classes.button} type="submit" variant="contained" color="primary">Done</Button>
                 </div>
-            </form> ||
+            </form>) ||
             <Grid container>
                 <Grid xs={11} item>
                     <Tooltip title="Click to Edit item" placement="top-start">
@@ -131,15 +132,15 @@ const List = props => {
                                         {...provided.dragHandleProps}
                                         style={getItemStyle(
                                             snapshot.isDragging,
-                                            {backgroundColor: item.color, ...provided.draggableProps.style}
+                                            { backgroundColor: item.color, ...provided.draggableProps.style }
                                         )}>
                                         <Grid
                                             item xs={2}
                                             className={classes.icon}
                                             data-index={index}
                                             onClick={handleOnMarkDoneClick}>
-                                            {item.done &&
-                                            <DoneOutlineIcon /> ||
+                                            {(item.done &&
+                                            <DoneOutlineIcon />) ||
                                             <CheckBoxOutlineBlankIcon />}
                                         </Grid>
                                         <Grid item xs={9}>
@@ -166,7 +167,7 @@ const List = props => {
             </Droppable>
         </div>
     )
-};
+}
 
 List.propTypes = {
     droppableId: PropTypes.string,
@@ -178,7 +179,7 @@ List.propTypes = {
     onItemChange: PropTypes.func,
     onListRemove: PropTypes.func,
     onListChange: PropTypes.func,
-    onItemColorChange: PropTypes.func,
-};
+    onItemColorChange: PropTypes.func
+}
 
 export default List

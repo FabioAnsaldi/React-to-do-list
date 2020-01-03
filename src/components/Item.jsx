@@ -1,16 +1,16 @@
 import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Input, Tooltip, TextareaAutosize, Button, Chip, Avatar } from "@material-ui/core"
-import { makeStyles } from '@material-ui/core/styles';
-import { CompactPicker } from "react-color"
+import { Input, Tooltip, TextareaAutosize, Button, Chip, Avatar } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { CompactPicker } from 'react-color'
 
 const useStyles = makeStyles(theme => ({
     title: {
         margin: 0,
         cursor: 'pointer',
         '&:hover': {
-            textDecoration: 'underline',
-        },
+            textDecoration: 'underline'
+        }
     },
     input: {
         display: 'block'
@@ -30,60 +30,60 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center',
         flexWrap: 'wrap',
         marginTop: '10px',
-        padding: 0,
+        padding: 0
     },
     chip: {
-        margin: theme.spacing(0.5),
+        margin: theme.spacing(0.5)
     },
     plus: {
         fontSize: '16px'
     }
-}));
+}))
 
 const Item = props => {
     const { data, index, onItemSave, onColorChange } = props
     const [item, setItem] = useState(data)
-    const classes = useStyles();
+    const classes = useStyles()
     const handleOnItemClick = () => {
         const newItem = { ...item }
 
-        newItem.editing = true;
-        setItem(newItem);
+        newItem.editing = true
+        setItem(newItem)
     }
     const handleOnTitleChange = event => {
         const newItem = { ...item }
 
-        newItem.title = event.currentTarget.value;
-        setItem(newItem);
+        newItem.title = event.currentTarget.value
+        setItem(newItem)
     }
     const handleOnContentChange = event => {
         const newItem = { ...item }
 
         newItem.content = event.currentTarget.value
-        setItem(newItem);
+        setItem(newItem)
     }
     const handleChangeComplete = color => {
         const newItem = { ...item }
 
-        newItem.color = color.hex;
-        setItem(newItem);
+        newItem.color = color.hex
+        setItem(newItem)
         onColorChange(index, color.hex)
     }
     const handleOnSubmit = event => {
-        event.preventDefault();
+        event.preventDefault()
         const newItem = { ...item }
 
-        delete newItem.editing;
+        delete newItem.editing
         if (newItem.tags) {
             newItem.tags.map((data, index) => {
                 delete data.editing
             })
         }
-        setItem(newItem);
+        setItem(newItem)
         onItemSave(index, newItem)
     }
     const handleAddClick = event => {
-        event.preventDefault();
+        event.preventDefault()
         const newItem = { ...item }
 
         if (!newItem.tags) {
@@ -94,23 +94,23 @@ const Item = props => {
             editing: true,
             label: 'Edit me'
         })
-        setItem(newItem);
+        setItem(newItem)
     }
     const handleOnTagChange = event => {
         const newItem = { ...item }
-        const index = event.currentTarget.parentNode.dataset.index;
+        const index = event.currentTarget.parentNode.dataset.index
         const tag = newItem.tags[index]
 
         tag.label = event.currentTarget.value
         newItem.tags.splice(index, 1, tag)
-        setItem(newItem);
+        setItem(newItem)
     }
     const handleChipDelete = event => {
         const newItem = { ...item }
-        const index = event.currentTarget.parentNode.dataset.index;
+        const index = event.currentTarget.parentNode.dataset.index
 
         newItem.tags.splice(index, 1)
-        setItem(newItem);
+        setItem(newItem)
     }
 
     return (
@@ -135,15 +135,15 @@ const Item = props => {
                     label="Add Tag"
                     onClick={handleAddClick} />
                 <div className={classes.paper}>
-                {item.tags && item.tags.map((data, index) =>
-                    <Chip
-                        key={data.id}
-                        data-index={index}
-                        label={!data.editing && data.label || <Input autoFocus data-index={index} onChange={handleOnTagChange} />}
-                        onDelete={handleChipDelete}
-                        className={classes.chip}
-                    />
-                )}
+                    {item.tags && item.tags.map((data, index) =>
+                        <Chip
+                            key={data.id}
+                            data-index={index}
+                            label={!data.editing && data.label || <Input autoFocus data-index={index} onChange={handleOnTagChange} />}
+                            onDelete={handleChipDelete}
+                            className={classes.chip}
+                        />
+                    )}
                 </div>
                 <Button className={classes.button} type="submit" variant="contained" color="primary">Done</Button>
             </form> ||
@@ -169,13 +169,13 @@ const Item = props => {
             }
         </div>
     )
-};
+}
 
 Item.propTypes = {
     data: PropTypes.object,
     index: PropTypes.number,
     onItemSave: PropTypes.func,
-    onColorChange: PropTypes.func,
-};
+    onColorChange: PropTypes.func
+}
 
 export default Item

@@ -21,8 +21,8 @@ const Layout = props => {
 
     return (
         <div className="layout-component">
-            {!loaded &&
-            <Preloader /> ||
+            {(!loaded &&
+            <Preloader />) ||
             <Fragment>
                 <Header />
                 <Container fixed>
@@ -33,13 +33,13 @@ const Layout = props => {
                     </Grid>
                 </Container>
             </Fragment>
-           }
+            }
         </div>
     )
-};
+}
 
 Layout.propTypes = {
     children: PropTypes.node.isRequired
-};
+}
 
 export default Layout

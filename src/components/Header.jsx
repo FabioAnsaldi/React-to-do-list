@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuIcon from '@material-ui/icons/Menu';
+import { makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import MenuIcon from '@material-ui/icons/Menu'
 
-const grid = 8;
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -21,17 +20,17 @@ const useStyles = makeStyles(theme => ({
     link: {
         minWidth: '100px'
     }
-}));
+}))
 
 const Header = () => {
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
+    const classes = useStyles()
+    const [anchorEl, setAnchorEl] = useState(null)
     const handleClick = event => {
-        setAnchorEl(event.currentTarget);
-    };
+        setAnchorEl(event.currentTarget)
+    }
     const handleClose = () => {
-        setAnchorEl(null);
-    };
+        setAnchorEl(null)
+    }
 
     return (
         <div className="header-component">
@@ -60,13 +59,13 @@ const Header = () => {
                             </MenuItem>
                         </Menu>
                         <Typography variant="h6" className={classes.title}>
-                            Todo's
+                            Todo&apos;s
                         </Typography>
                     </Toolbar>
                 </AppBar>
             </div>
         </div>
     )
-};
+}
 
 export default Header

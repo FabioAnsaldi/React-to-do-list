@@ -11,15 +11,15 @@ const preloader = {
     top: 0,
     transition: 'opacity 0.3s linear',
     width: '100%',
-    zIndex: 99,
-};
+    zIndex: 99
+}
 
 const Preloader = props => {
     return (
         <div className="preloader-component" style={preloader}>
-            <h2 style={{fontFamily: 'initial', fontSize: 'initial'}}>Loading ...</h2>
+            <h2 style={{ fontFamily: 'initial', fontSize: 'initial' }}>Loading ...</h2>
         </div>
     )
-};
+}
 
 export default Preloader
