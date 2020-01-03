@@ -7,8 +7,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "./node_modules/.bin/eslint src/pages/**",
-    "fix": "./node_modules/.bin/eslint src/pages/** --fix",
+    "lint": "./node_modules/.bin/eslint src/*/**",
+    "fix": "./node_modules/.bin/eslint src/*/** --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

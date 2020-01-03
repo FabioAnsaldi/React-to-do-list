@@ -115,7 +115,7 @@ const Item = props => {
 
     return (
         <div className="item-component">
-            {item.editing &&
+            {(item.editing &&
             <form onSubmit={handleOnSubmit} noValidate autoComplete="off">
                 <Input
                     className={classes.input}
@@ -139,14 +139,14 @@ const Item = props => {
                         <Chip
                             key={data.id}
                             data-index={index}
-                            label={!data.editing && data.label || <Input autoFocus data-index={index} onChange={handleOnTagChange} />}
+                            label={(!data.editing && data.label) || <Input autoFocus data-index={index} onChange={handleOnTagChange} />}
                             onDelete={handleChipDelete}
                             className={classes.chip}
                         />
                     )}
                 </div>
                 <Button className={classes.button} type="submit" variant="contained" color="primary">Done</Button>
-            </form> ||
+            </form>) ||
             <Fragment>
                 <Tooltip title="Click to Edit item" placement="top-start">
                     <h4

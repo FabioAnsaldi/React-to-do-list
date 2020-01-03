@@ -9,14 +9,14 @@ const useStyles = makeStyles(theme => ({
     grid: {
         flexGrow: 1
     }
-}));
+}))
 
 const Layout = props => {
-    const classes = useStyles();
+    const classes = useStyles()
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
-        setLoaded(true);
+        setLoaded(true)
     }, [])
 
     return (
