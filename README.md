@@ -1,4 +1,4 @@
-# react-to-do-list
+# React-to-do-list
 React To-Do-List application into docker environment
 
 ## Table of Contents
